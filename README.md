@@ -3,7 +3,7 @@
 An on-going plugin for leaflet with Baidu Map.
 
 ##Why this plugin?##
-Baidu map is using a different coordiante system and a different algorithm to calculate tile coordinate.
+Baidu map is using a different coordinate system and a different algorithm to calculate tile coordinate.
 
 ##Contributing to the code##
 I have created several tickets in the issue list with "help wanted" labels. If you have any idea, please do not hesitate leave a comment or make a pull request. **All the advices are appreciated.**
@@ -40,4 +40,4 @@ Formula: tile\_coordinate = |pixel\_coordinate/256|
 ![tile coordinate](http://pic002.cnblogs.com/images/2011/308287/2011070217022613.png)
 
 ###Chinese Documentation###
-The coordinate system are cited from [Here](http://www.zdoz.net/apiList.html). Here's more details in Chinese.
+The coordinate system is cited from [Here](http://www.zdoz.net/apiList.html). Here's more details in Chinese.
