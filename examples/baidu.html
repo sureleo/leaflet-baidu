@@ -1,34 +1,33 @@
 <html>
-<head>
-    <title>Leaflet</title>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
-    <script
-        src="http://api.map.baidu.com/api?v=1.5&ak=wEdGBRYrr5t1tF9X9cGbSmkB"
-        type="text/javascript"
-    >
-    </script>
-    <script src="../layer/tile/leaflet-baidu.js"></script>
-</head>
-<body>
-    <div style="width:100%; height:100%" id="map"></div>
-    <script type='text/javascript'>
-    map = new L.map(
-        'map',
-        {
-            'crs': L.CRS.BEPSG3857,
-            'center': [
-                39.915, //Coordinate of Tian'an Men of Baidu Coordinate
-                116.404
-            ],
-            'zoom': 13,
-            'minZoom': 3,
-            'maxZoom': 18
-        }
-    );
-    
-    var baidu = new L.Baidu('wEdGBRYrr5t1tF9X9cGbSmkB');
-    map.addLayer(baidu);
-    </script>
-</body>
+    <head>
+        <title>Leaflet</title>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+        <script src="../lib/leaflet-src.js"></script>
+        <script
+            src="http://api.map.baidu.com/api?v=1.5&ak=wEdGBRYrr5t1tF9X9cGbSmkB"
+            type="text/javascript"
+        >
+        </script>
+        <script src="../layer/tile/leaflet-baidu.js"></script>
+    </head>
+    <body>
+        <div style="width:100%; height:100%" id="map"></div>
+        <script type='text/javascript'>
+            map = new L.map(
+                'map',
+                {
+                    'crs': L.CRS.BEPSG3857,
+                    'center': [
+                        39.915, //Coordinate of Tian'an Men of Baidu Coordinate
+                        116.404
+                    ],
+                    'zoom': 13,
+                    'minZoom': 3,
+                    'maxZoom': 18
+                }
+            );
+            var baidu = new L.Baidu('wEdGBRYrr5t1tF9X9cGbSmkB');
+            map.addLayer(baidu);
+        </script>
+    </body>
 </html>
