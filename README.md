@@ -43,4 +43,4 @@ Formula: tile\_coordinate = |pixel\_coordinate/256|
 The coordinate system is cited from [Here](http://www.zdoz.net/apiList.html). Here's more details in Chinese.
 
 ##Contact##
-My email is [surezeroleo@gmail.com](surezeroleo@gmail.com). Again, **all advices are appreciated**.
+My email is <surezeroleo@gmail.com>. Again, **all advices are appreciated**.
