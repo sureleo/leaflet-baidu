@@ -39,7 +39,7 @@ L.Projection.BaiduSphericalMercator = {
     /**
      * Don't know how it used currently.
      *
-     * However, I guess this is the range of coordnate.
+     * However, I guess this is the range of coordinate.
      * Range of pixel coordinate is gotten from
      * BMap.MercatorProjection.lngLatToPoint(180, -90) and (180, 90)
      * After getting max min value of pixel coordinate, use
