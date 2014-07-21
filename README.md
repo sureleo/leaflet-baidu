@@ -17,7 +17,7 @@ Basically, there are 4 kinds of coordinate need to know: Longitude and Latitude,
 The coordinate Baidu Map using is different from WGS84, which is general international standards. However, one layer encryption is required by the goverment, which is called GCJ-02. Moreover, Baidu Map encrypts another layer called BD-09 based on GCJ-02. [Here's an interface to convert those coordinates.](http://www.zdoz.net/apiList.html) 
 
 ###Point Coordinate###
-Baidu Map uses Mercator projection. The difference between Baidu Map and other maps in projection is the range of latitude. Google map will project the earth to a square, latitude is from -85 to 85; whereas baidu map projects the earth to a rectangular, from -71.988531 to 74.000022. This coordinate convertion is managed by a class called BMap from Baidu.
+Baidu Map uses Mercator projection. The difference between Baidu Map and other maps in projection is the range of latitude. Google map will project the earth to a square, latitude is from -85 to 85; whereas baidu map projects the earth from -71.988531 to 74.000022. This coordinate convertion is managed by a class called BMap from Baidu.
 ```javascript
 var projection = new BMap.MercatorProjection();
 var point = projection.lngLatToPoint(new BMap.Point(116.404, 39.915));
