@@ -40,6 +40,10 @@ L.Projection.BaiduSphericalMercator = {
 
     /**
      * Don't know how it used currently.
+     * July 21st, By Shuo Li.
+     * I guess this is the projection bounds of the map.
+     * Seems this is a square. However baidu map is a rectangular.
+     * TODO: need to fix this
      */
     bounds: (function () {
         var d = this.R * Math.PI;
@@ -144,6 +148,7 @@ L.Baidu = L.TileLayer.extend({
         //TODO: decode utf8 characters in attribution
         attribution: '© 2014 Baidu - GS(2012)6003;- Data © <a target="_blank" href="http://www.navinfo.com/">NavInfo</a> & <a target="_blank" href="http://www.cennavi.com.cn/">CenNavi</a> & <a target="_blank" href="http://www.365ditu.com/">DaoDaoTong</a>'
     },
+
     /**
      * initialize the map with key and tile URL
      *
@@ -155,6 +160,34 @@ L.Baidu = L.TileLayer.extend({
         L.Util.setOptions(this, options);
         this._key = key;
         this._url = 'http://{subdomain}.map.bdimg.com/tile/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20140711';
+    },
+
+    /**
+     * Set the corresponding position of tiles in baidu map.
+     * if point.y is less or equal than 256, i.e. 35=>291, -221=>547
+     * if point.y is greater than 256, i.e. 291=>35, 547=>-221
+     *
+     * @method _getTilePos
+     * @param {Object} tilePoint tile coordinate
+     * @return {Object} point left and top property of <img>
+     */
+    _getTilePos: function (tilePoint) {
+        var origin = this._map.getPixelOrigin();
+        var tileSize = this._getTileSize();
+
+        var point = tilePoint.multiplyBy(tileSize).subtract(origin);
+        if (point.y <= 256) {
+            point.y = (
+                2 * Math.abs(
+                    Math.floor(point.y / tileSize)
+                ) + 1
+            ) * tileSize + point.y;
+        } else {
+            point.y = point.y - (
+                Math.floor(point.y / tileSize) * 2 - 1
+            ) * tileSize;
+        }
+        return point;
     },
 
     /**
