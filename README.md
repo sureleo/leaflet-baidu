@@ -7,6 +7,8 @@ Baidu map is using a different coordinate system and a different algorithm to ca
 
 ##Contributing to the code##
 I have created several tickets in the issue list with "help wanted" labels. If you have any idea, please do not hesitate leave a comment or make a pull request. **All the advices are appreciated.**
+It would be great if you create the branch accordingly: fix_*number of issue*.
+It would also be great if you create commit message accordingly: re #*number of issue*: *your commit message*
 
 ##How Does Baidu Map Work?##
 Basically, there are 4 kinds of coordinate need to know: Longitude and Latitude, point coordinate, pixel coordiante, tile coordinate. In the following demostration, I will use the coordinate of Tian'an Men(116.404, 39.915) in Baidu coordinate system.
