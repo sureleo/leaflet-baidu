@@ -141,7 +141,8 @@ L.CRS.BEPSG3857 = L.extend({}, L.CRS, {
 L.Baidu = L.TileLayer.extend({
     options: {
         subdomains: ['online1', 'online2', 'online3'],
-        attribution: 'Baidu'
+        //TODO: decode utf8 characters in attribution
+        attribution: '© 2014 Baidu - GS(2012)6003;- Data © <a target="_blank" href="http://www.navinfo.com/">NavInfo</a> & <a target="_blank" href="http://www.cennavi.com.cn/">CenNavi</a> & <a target="_blank" href="http://www.365ditu.com/">DaoDaoTong</a>'
     },
     /**
      * initialize the map with key and tile URL
