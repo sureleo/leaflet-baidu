@@ -4,7 +4,6 @@
  * @class BaiduSphericalMercator
  */
 L.Projection.BaiduSphericalMercator = {
-    R: 6378137,
     /**
      * Project latLng to point coordinate
      *
@@ -33,21 +32,28 @@ L.Projection.BaiduSphericalMercator = {
         var point = projection.pointToLngLat(
             new BMap.Pixel(bpoint.x, bpoint.y)
         );
-        console.log(point);
         latLng = new L.LatLng(point.lng, point.lat);
         return latLng;
     },
 
     /**
      * Don't know how it used currently.
-     * July 21st, By Shuo Li.
-     * I guess this is the projection bounds of the map.
-     * Seems this is a square. However baidu map is a rectangular.
-     * TODO: need to fix this
+     *
+     * However, I guess this is the range of coordnate.
+     * Range of pixel coordinate is gotten from
+     * BMap.MercatorProjection.lngLatToPoint(180, -90) and (180, 90)
+     * After getting max min value of pixel coordinate, use
+     * pointToLngLat() get the max lat and Lng.
      */
     bounds: (function () {
-        var d = this.R * Math.PI;
-        return L.bounds([-d, -d], [d, d]); //20037508.342789244
+        var MAX_X= 20037726.37;
+        var MIN_Y= -11708041.66;
+        var MAX_Y= 12474104.17;
+        var bounds = L.bounds(
+            [-MAX_X, MIN_Y], //180, -71.988531
+            [MAX_X, MAX_Y]  //-180, 74.000022
+        );
+        return bounds;
     })()
 };
 
