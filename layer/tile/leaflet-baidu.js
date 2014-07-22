@@ -32,7 +32,7 @@ L.Projection.BaiduSphericalMercator = {
         var point = projection.pointToLngLat(
             new BMap.Pixel(bpoint.x, bpoint.y)
         );
-        latLng = new L.LatLng(point.lng, point.lat);
+        latLng = new L.LatLng(point.lat, point.lng);
         return latLng;
     },
 
@@ -120,9 +120,9 @@ L.CRS.BEPSG3857 = L.extend({}, L.CRS, {
      * @return {Object} pixel coordinate calculated for latLng
      */
     latLngToPoint: function (latlng, zoom) { // (LatLng, Number) -> Point
-		var projectedPoint = this.projection.project(latlng);
-		return this.transformation._transform(projectedPoint, zoom);
-	},
+        var projectedPoint = this.projection.project(latlng);
+        return this.transformation._transform(projectedPoint, zoom);
+    },
 
     /**
      * transform pixel coordinate to latLng
@@ -133,9 +133,9 @@ L.CRS.BEPSG3857 = L.extend({}, L.CRS, {
      * @return {Object} latitude and longitude
      */
     pointToLatLng: function (point, zoom) { // (Point, Number[, Boolean]) -> LatLng
-		var untransformedPoint = this.transformation.untransform(point, zoom);
-		return this.projection.unproject(untransformedPoint);
-	},
+        var untransformedPoint = this.transformation.untransform(point, zoom);
+        return this.projection.unproject(untransformedPoint);
+    },
 
     code: 'EPSG:3857',
     projection: L.Projection.BaiduSphericalMercator,
@@ -229,28 +229,9 @@ L.map = function (id, options) {
         return point;
     };
 
-    /**
-     * These 2 methods is for calculating the correct latitude.
-     * The origin leaflet doesn't suit for Baidu Map.
-     * For now, the more northen I click, the larger latitude.
-     * TODO: should create a method called baiduAdd/Substract
-     * to use point add and substract operators
-     */
-    var containerPointToLayerPointBaidu = function(point) {
-        var pane = this._getMapPanePos();
-        return L.point(point.x - pane.x, point.y + pane.y);
-    };
-
-    var layerPointToContainerPointBaidu = function(point) {
-        var pane = this._getMapPanePos();
-        return L.point(point.x + pane.x, point.y - pane.y);
-    };
-
     //if option has baidu, use custom method
     if (options.baidu === true) {
         map._getTopLeftPoint = _getTopLeftPointBaidu;
-        map.containerPointToLayerPoint = containerPointToLayerPointBaidu;
-        map.layerPointToContainerPoint = layerPointToContainerPointBaidu;
     }
     return map;
 };
