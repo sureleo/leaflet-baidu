@@ -227,9 +227,9 @@ L.map = function (id, options) {
             var pixel = this.getPixelOrigin();
             var pane = this._getMapPanePos();
             var point = new L.Point(pixel.x - pane.x, pixel.y + pane.y);
-		    return point;
+            return point;
         } else {
-		    return this.getPixelOrigin().subtract(this._getMapPanePos());
+            return this.getPixelOrigin().subtract(this._getMapPanePos());
         }
     };
     return map;
