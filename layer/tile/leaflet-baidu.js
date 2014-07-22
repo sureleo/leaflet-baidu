@@ -32,7 +32,7 @@ L.Projection.BaiduSphericalMercator = {
         var point = projection.pointToLngLat(
             new BMap.Pixel(bpoint.x, bpoint.y)
         );
-        latLng = new L.LatLng(point.lng, point.lat);
+        latLng = new L.LatLng(point.lat, point.lng);
         return latLng;
     },
 
@@ -120,9 +120,9 @@ L.CRS.BEPSG3857 = L.extend({}, L.CRS, {
      * @return {Object} pixel coordinate calculated for latLng
      */
     latLngToPoint: function (latlng, zoom) { // (LatLng, Number) -> Point
-		var projectedPoint = this.projection.project(latlng);
-		return this.transformation._transform(projectedPoint, zoom);
-	},
+        var projectedPoint = this.projection.project(latlng);
+        return this.transformation._transform(projectedPoint, zoom);
+    },
 
     /**
      * transform pixel coordinate to latLng
@@ -133,9 +133,9 @@ L.CRS.BEPSG3857 = L.extend({}, L.CRS, {
      * @return {Object} latitude and longitude
      */
     pointToLatLng: function (point, zoom) { // (Point, Number[, Boolean]) -> LatLng
-		var untransformedPoint = this.transformation.untransform(point, zoom);
-		return this.projection.unproject(untransformedPoint);
-	},
+        var untransformedPoint = this.transformation.untransform(point, zoom);
+        return this.projection.unproject(untransformedPoint);
+    },
 
     code: 'EPSG:3857',
     projection: L.Projection.BaiduSphericalMercator,
@@ -212,7 +212,7 @@ L.Baidu = L.TileLayer.extend({
 });
 
 L.map = function (id, options) {
-    map = new L.Map(id, options);
+    var map = new L.Map(id, options);
 
     /**
      * Override _getTopLeftPoint method. For Baidu Map, if dragging
@@ -222,16 +222,17 @@ L.map = function (id, options) {
      * @method _getTopLeftPoint
      * @return {Object} point top left point
      */
-    map._getTopLeftPoint = function() {
-        if (options.baidu === true) {
-            var pixel = this.getPixelOrigin();
-            var pane = this._getMapPanePos();
-            var point = new L.Point(pixel.x - pane.x, pixel.y + pane.y);
-            return point;
-        } else {
-            return this.getPixelOrigin().subtract(this._getMapPanePos());
-        }
+    var _getTopLeftPointBaidu = function () {
+        var pixel = this.getPixelOrigin();
+        var pane = this._getMapPanePos();
+        var point = new L.Point(pixel.x - pane.x, pixel.y + pane.y);
+        return point;
     };
+
+    //if option has baidu, use custom method
+    if (options.baidu === true) {
+        map._getTopLeftPoint = _getTopLeftPointBaidu;
+    }
     return map;
 };
 
