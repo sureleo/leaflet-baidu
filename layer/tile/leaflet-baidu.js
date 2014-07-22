@@ -152,7 +152,7 @@ L.Baidu = L.TileLayer.extend({
     options: {
         subdomains: ['online1', 'online2', 'online3'],
         //TODO: decode utf8 characters in attribution
-        attribution: '© 2014 Baidu - GS(2012)6003;- Data © <a target="_blank" href="http://www.navinfo.com/">NavInfo</a> & <a target="_blank" href="http://www.cennavi.com.cn/">CenNavi</a> & <a target="_blank" href="http://www.365ditu.com/">DaoDaoTong</a>'
+        attribution: '© 2014 Baidu - GS(2012)6003;- Data © <a target="_blank" href="http://www.navinfo.com/">NavInfo</a> & <a target="_blank" href="http://www.cennavi.com.cn/">CenNavi</a> & <a target="_blank" href="http://www.365ditu.com/">DaoDaoTong</a>',
     },
 
     /**
@@ -210,6 +210,30 @@ L.Baidu = L.TileLayer.extend({
             .replace('{z}', this._getZoomForUrl());
     }
 });
+
+L.map = function (id, options) {
+    map = new L.Map(id, options);
+
+    /**
+     * Override _getTopLeftPoint method. For Baidu Map, if dragging
+     * down side of the map, y will increase rather than decrease.
+     * vice versa.
+     *
+     * @method _getTopLeftPoint
+     * @return {Object} point top left point
+     */
+    map._getTopLeftPoint = function() {
+        if (options.baidu === true) {
+            var pixel = this.getPixelOrigin();
+            var pane = this._getMapPanePos();
+            var point = new L.Point(pixel.x - pane.x, pixel.y + pane.y);
+            return point;
+        } else {
+            return this.getPixelOrigin().subtract(this._getMapPanePos());
+        }
+    };
+    return map;
+};
 
 L.baiduLayer = function (key, options) {
     return new L.Baidu(key, options);
