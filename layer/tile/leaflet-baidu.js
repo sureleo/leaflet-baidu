@@ -149,7 +149,6 @@ L.CRS.BEPSG3857 = L.extend({}, L.CRS, {
  * @class Baidu
  */
 L.Baidu = L.TileLayer.extend({
-    map: this._map,
     options: {
         subdomains: ['online1', 'online2', 'online3'],
         //TODO: decode utf8 characters in attribution
@@ -212,11 +211,17 @@ L.Baidu = L.TileLayer.extend({
     }
 });
 
-L.BaiduMap = L.Map.extend( {
-});
-
 L.map = function (id, options) {
-    map = new L.BaiduMap(id, options);
+    map = new L.Map(id, options);
+
+    /**
+     * Override _getTopLeftPoint method. For Baidu Map, if dragging
+     * down side of the map, y will increase rather than decrease.
+     * vice versa.
+     *
+     * @method _getTopLeftPoint
+     * @return {Object} point top left point
+     */
     map._getTopLeftPoint = function() {
         if (options.baidu === true) {
             var pixel = this.getPixelOrigin();
