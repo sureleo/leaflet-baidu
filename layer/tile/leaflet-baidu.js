@@ -149,10 +149,11 @@ L.CRS.BEPSG3857 = L.extend({}, L.CRS, {
  * @class Baidu
  */
 L.Baidu = L.TileLayer.extend({
+    map: this._map,
     options: {
         subdomains: ['online1', 'online2', 'online3'],
         //TODO: decode utf8 characters in attribution
-        attribution: '© 2014 Baidu - GS(2012)6003;- Data © <a target="_blank" href="http://www.navinfo.com/">NavInfo</a> & <a target="_blank" href="http://www.cennavi.com.cn/">CenNavi</a> & <a target="_blank" href="http://www.365ditu.com/">DaoDaoTong</a>'
+        attribution: '© 2014 Baidu - GS(2012)6003;- Data © <a target="_blank" href="http://www.navinfo.com/">NavInfo</a> & <a target="_blank" href="http://www.cennavi.com.cn/">CenNavi</a> & <a target="_blank" href="http://www.365ditu.com/">DaoDaoTong</a>',
     },
 
     /**
@@ -210,6 +211,24 @@ L.Baidu = L.TileLayer.extend({
             .replace('{z}', this._getZoomForUrl());
     }
 });
+
+L.BaiduMap = L.Map.extend( {
+});
+
+L.map = function (id, options) {
+    map = new L.BaiduMap(id, options);
+    map._getTopLeftPoint = function() {
+        if (options.baidu === true) {
+            var pixel = this.getPixelOrigin();
+            var pane = this._getMapPanePos();
+            var point = new L.Point(pixel.x - pane.x, pixel.y + pane.y);
+		    return point;
+        } else {
+		    return this.getPixelOrigin().subtract(this._getMapPanePos());
+        }
+    };
+    return map;
+};
 
 L.baiduLayer = function (key, options) {
     return new L.Baidu(key, options);
