@@ -212,7 +212,7 @@ L.Baidu = L.TileLayer.extend({
 });
 
 L.map = function (id, options) {
-    map = new L.Map(id, options);
+    var map = new L.Map(id, options);
 
     /**
      * Override _getTopLeftPoint method. For Baidu Map, if dragging
@@ -222,16 +222,36 @@ L.map = function (id, options) {
      * @method _getTopLeftPoint
      * @return {Object} point top left point
      */
-    map._getTopLeftPoint = function() {
-        if (options.baidu === true) {
-            var pixel = this.getPixelOrigin();
-            var pane = this._getMapPanePos();
-            var point = new L.Point(pixel.x - pane.x, pixel.y + pane.y);
-            return point;
-        } else {
-            return this.getPixelOrigin().subtract(this._getMapPanePos());
-        }
+    var _getTopLeftPointBaidu = function () {
+        var pixel = this.getPixelOrigin();
+        var pane = this._getMapPanePos();
+        var point = new L.Point(pixel.x - pane.x, pixel.y + pane.y);
+        return point;
     };
+
+    /**
+     * These 2 methods is for calculating the correct latitude.
+     * The origin leaflet doesn't suit for Baidu Map.
+     * For now, the more northen I click, the larger latitude.
+     * TODO: should create a method called baiduAdd/Substract
+     * to use point add and substract operators
+     */
+    var containerPointToLayerPointBaidu = function(point) {
+        var pane = this._getMapPanePos();
+        return L.point(point.x - pane.x, point.y + pane.y);
+    };
+
+    var layerPointToContainerPointBaidu = function(point) {
+        var pane = this._getMapPanePos();
+        return L.point(point.x + pane.x, point.y - pane.y);
+    };
+
+    //if option has baidu, use custom method
+    if (options.baidu === true) {
+        map._getTopLeftPoint = _getTopLeftPointBaidu;
+        map.containerPointToLayerPoint = containerPointToLayerPointBaidu;
+        map.layerPointToContainerPoint = layerPointToContainerPointBaidu;
+    }
     return map;
 };
 
