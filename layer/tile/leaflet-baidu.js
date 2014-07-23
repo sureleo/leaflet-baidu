@@ -253,10 +253,44 @@ L.map = function (id, options) {
         return point;
     };
 
+    /**
+     * Override _update method in map. redefine bounds.
+     * Pros: no blank row on the top or bottom
+     * Cons: some times it might load a row that is not necessary.
+     *
+     * @method _updateBaidu
+     */
+    var _updateBaidu = function () {
+        if (!this._map) { return; }
+        var map = this._map,
+            bounds = map.getPixelBounds(),
+            zoom = map.getZoom(),
+            tileSize = this._getTileSize();
+        if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
+            return;
+        }
+
+        boundsMax = bounds.max.divideBy(tileSize);
+        boundsMax.x = Math.floor(boundsMax.x);
+        boundsMax.y = Math.ceil(boundsMax.y);
+
+        var tileBounds = L.bounds(
+                bounds.min.divideBy(tileSize)._floor(),
+                boundsMax
+            );
+
+        this._addTilesFromCenterOut(tileBounds);
+        if (this.options.unloadInvisibleTiles || this.options.reuseTiles) {
+            this._removeOtherTiles(tileBounds);
+        }
+    };
+
+
     //if option has baidu, use custom method
     if (options.baidu === true) {
         map._getTopLeftPoint = _getTopLeftPointBaidu;
         map.setZoomAround = setZoomAroundBaidu;
+        map._update = _updateBaidu;
     }
     return map;
 };
