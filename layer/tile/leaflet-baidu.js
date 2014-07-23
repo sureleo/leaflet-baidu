@@ -227,7 +227,6 @@ L.map = function (id, options) {
      * @return {Object} TODO: not sure for now. probably the map itself
      */
     var setZoomAroundBaidu = function (latlng, zoom, options) {
-        console.log(latlng);
         var scale = this.getZoomScale(zoom);
         var viewHalf = this.getSize().divideBy(2);
         var containerPoint = latlng instanceof L.Point ? latlng : this.latLngToContainerPoint(latlng);
