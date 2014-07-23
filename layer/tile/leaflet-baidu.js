@@ -16,7 +16,7 @@ L.Projection.BaiduSphericalMercator = {
         var point = projection.lngLatToPoint(
             new BMap.Point(latLng.lng, latLng.lat)
         );
-        leafletPoint = new L.Point(point.x, point.y);
+        var leafletPoint = new L.Point(point.x, point.y);
         return leafletPoint;
     },
 
@@ -32,7 +32,7 @@ L.Projection.BaiduSphericalMercator = {
         var point = projection.pointToLngLat(
             new BMap.Pixel(bpoint.x, bpoint.y)
         );
-        latLng = new L.LatLng(point.lat, point.lng);
+        var latLng = new L.LatLng(point.lat, point.lng);
         return latLng;
     },
 
@@ -215,6 +215,30 @@ L.map = function (id, options) {
     var map = new L.Map(id, options);
 
     /**
+     * load new tiles when set zoom for baidu map
+     * Works well: mouse scroll. zoom level <= 14 in double click
+     * Works not well: zoom level > 14. Not Accurate at all.
+     * TODO: figure out why not accurate. Potential: CRS differences.
+     *
+     * @method _setZoomAroundBaidu
+     * @param {Object} latlng position of mouse clicked on the canvas
+     * @param {Number} zoom zoom level
+     * @param {Object} options options of the map
+     * @return {Object} TODO: not sure for now. probably the map itself
+     */
+    var setZoomAroundBaidu = function (latlng, zoom, options) {
+        var scale = this.getZoomScale(zoom);
+        var viewHalf = this.getSize().divideBy(2);
+        var containerPoint = latlng instanceof L.Point ? latlng : this.latLngToContainerPoint(latlng);
+        var centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale);
+        var newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
+        var oldCenterLat = this.getCenter().lat;
+        //add offset rather than minus it
+        newCenter.lat = oldCenterLat - newCenter.lat + oldCenterLat;
+        return this.setView(newCenter, zoom, {zoom: options});
+    };
+
+    /**
      * Override _getTopLeftPoint method. For Baidu Map, if dragging
      * down side of the map, y will increase rather than decrease.
      * vice versa.
@@ -232,6 +256,7 @@ L.map = function (id, options) {
     //if option has baidu, use custom method
     if (options.baidu === true) {
         map._getTopLeftPoint = _getTopLeftPointBaidu;
+        map.setZoomAround = setZoomAroundBaidu;
     }
     return map;
 };
