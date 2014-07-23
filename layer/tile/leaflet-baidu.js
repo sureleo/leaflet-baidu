@@ -275,9 +275,9 @@ L.map = function (id, options) {
         boundsMax.y = Math.ceil(boundsMax.y);
 
         var tileBounds = L.bounds(
-                bounds.min.divideBy(tileSize)._floor(),
-                boundsMax
-            );
+            bounds.min.divideBy(tileSize)._floor(),
+            boundsMax
+        );
 
         this._addTilesFromCenterOut(tileBounds);
         if (this.options.unloadInvisibleTiles || this.options.reuseTiles) {
