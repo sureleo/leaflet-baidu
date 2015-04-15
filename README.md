@@ -28,7 +28,7 @@ An image to show point coordinate:
 ![point coordinate](http://pic002.cnblogs.com/images/2011/308287/2011070216261345.png)
 
 ###Pixel Coordinate###
-Formula: pixel\_coordinate = |point\_coordinate \* 2^(18-zoom)|. *If you how to make math equation in markdown feel free to make a pull request.*  
+Formula: pixel\_coordinate = |point\_coordinate \* 2^(zoom-18)|. *If you how to make math equation in markdown feel free to make a pull request.*  
 18 is the Max Zoom level of Baidu map. The pixel coordinate of Tian'an Men in Zoom Level 4 in Baidu Map is 790, 294.  
 ![pixel coordinate](http://pic002.cnblogs.com/images/2011/308287/2011070216561045.jpg)
 
