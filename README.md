@@ -1,4 +1,4 @@
-#leaflet-baidu# #This plugin in no longer maintained nor enchanced#
+#leaflet-baidu: This plugin in no longer maintained nor enchanced#
 
 An on-going plugin for leaflet with Baidu Map.
 
